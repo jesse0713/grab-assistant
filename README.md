@@ -58,7 +58,7 @@
 
 > 需要 Chrome 114 及以上。Chrome 137 之后，官方版 Chrome 可能限制命令行 `--load-extension`，但「加载已解压的扩展程序」仍然可用。如果开发者模式被企业策略禁用，需要换一台不受管的 Chrome，或让管理员放开扩展安装权限。
 
-本仓库不提交打包产物。需要 zip 时，直接压缩 `extension` 文件夹即可，内容与加载目录一致。
+本仓库不提交打包产物。想直接用现成包的话，到 [Releases](https://github.com/jesse0713/grab-assistant/releases) 下载 `v0.1.0` 的 zip，解压出一个文件夹后，用「加载已解压的扩展程序」选中它即可；源码里的 `extension` 文件夹与压缩包内容完全一致。
 
 ## 使用
 
