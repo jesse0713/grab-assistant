@@ -1,0 +1,17 @@
+# 打包产物（可由 extension/ 直接生成，不入库）
+release/
+
+# 端到端测试用的浏览器与临时目录
+.tools/
+.chrome-e2e/
+chrome-e2e.log
+
+# 依赖与系统垃圾文件
+node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 本地环境变量（如果以后加入配置）
+.env
+.env.*

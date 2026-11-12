@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>模拟收银台</title>
+    <style>
+      body { margin: 0; font: 15px/1.6 system-ui, "Microsoft YaHei", sans-serif; background: #f7f7f8; color: #1b1c20; }
+      .wrap { max-width: 640px; margin: 60px auto; padding: 0 20px; }
+      .card { background: #fff; border: 1px solid #e7e5e0; border-radius: 16px; padding: 30px; text-align: center; }
+      h1 { margin: 0 0 8px; font-size: 24px; }
+      .ok { color: #0f7b4f; font-weight: 700; }
+      .order { font-family: ui-monospace, Menlo, Consolas, monospace; color: #777b82; margin: 6px 0 22px; }
+      #payBtn { border: 0; border-radius: 10px; padding: 12px 26px; background: #1677ff; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; }
+      .safe { margin-top: 16px; font-size: 12px; color: #8a8d94; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>✅ <span class="ok">订单已创建</span></h1>
+        <div class="order" id="orderText">订单号读取中…</div>
+        <p>这是模拟收银台。扩展应当停在这里，把付款留给你。</p>
+        <button id="payBtn" type="button">确认支付</button>
+        <div class="safe">如果你看到这个页面，说明自动下单流程已经走到最后一步。</div>
+      </div>
+    </div>
+    <script>
+      const id = new URLSearchParams(location.search).get('order') || 'UNKNOWN';
+      document.getElementById('orderText').textContent = '订单号：' + id;
+      localStorage.setItem('lastPayUrl', location.href);
+      document.getElementById('payBtn').addEventListener('click', () => {
+        localStorage.setItem('paymentClicked', '1');
+      });
+    </script>
+  </body>
+</html>

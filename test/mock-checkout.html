@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>确认订单 · 本地测试</title>
+    <style>
+      body { margin: 0; font: 15px/1.6 system-ui, "Microsoft YaHei", sans-serif; background: #f7f7f8; color: #1b1c20; }
+      .wrap { max-width: 720px; margin: 40px auto; padding: 0 20px; }
+      .card { background: #fff; border: 1px solid #e7e5e0; border-radius: 16px; padding: 26px; }
+      h1 { margin: 0 0 18px; font-size: 24px; }
+      .line { display: flex; justify-content: space-between; gap: 20px; padding: 12px 0; border-bottom: 1px solid #f0ede8; }
+      .line .k { color: #777b82; }
+      .line .v { font-weight: 600; }
+      .total { font-size: 26px; color: #ff5a1f; font-weight: 800; }
+      .agree { display: flex; gap: 8px; align-items: center; margin: 18px 0; color: #55585f; font-size: 14px; }
+      #submitBtn { width: 100%; border: 0; border-radius: 11px; padding: 13px; background: #ff5a1f; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; }
+      .note { margin-top: 14px; font-size: 12px; color: #8a8d94; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>确认订单</h1>
+        <div class="line"><span class="k">商品</span><span class="v">测试商品 · 限量闪电版</span></div>
+        <div class="line"><span class="k">规格</span><span class="v" id="specText">标准版</span></div>
+        <div class="line"><span class="k">收货地址</span><span class="v">本地测试地址（不会真实发货）</span></div>
+        <div class="line"><span class="k">应付</span><span class="v total">¥ 199.00</span></div>
+        <label class="agree"><input id="agree" type="checkbox" checked /> 我同意本地测试条款</label>
+        <button id="submitBtn" data-testid="submit-order" type="button">提交订单</button>
+        <div class="note">这是本地模拟页。点击「提交订单」只会写入 localStorage，并跳转到模拟收银台。</div>
+      </div>
+    </div>
+    <script>
+      document.getElementById('specText').textContent = localStorage.getItem('mockSpec') || '标准版';
+      document.getElementById('submitBtn').addEventListener('click', () => {
+        const orders = JSON.parse(localStorage.getItem('mockOrders') || '[]');
+        const id = 'ORD-' + Date.now();
+        orders.push({ id, at: Date.now(), page: location.href });
+        localStorage.setItem('mockOrders', JSON.stringify(orders));
+        localStorage.setItem('lastOrderId', id);
+        setTimeout(() => {
+          location.href = '/test/mock-pay.html?order=' + encodeURIComponent(id);
+        }, 250);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=410, initial-scale=1" />
+    <title>抢单助手</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="top">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="23" height="23" fill="none">
+              <path d="M13.2 2 4.8 13.1h5.4L9.8 22l8.6-11.4h-5.5L13.2 2Z" fill="currentColor" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <div class="name">抢单助手</div>
+            <div class="sub">定时点击 · 停在付款页</div>
+          </div>
+        </div>
+        <div id="statusPill" class="pill idle">待命</div>
+      </header>
+
+      <main id="main">
+        <section class="card page-card">
+          <div class="page-row">
+            <div class="page-main">
+              <div id="pageTitle" class="page-title">正在读取当前页面…</div>
+              <div id="pageUrl" class="page-url"></div>
+            </div>
+            <span id="pageBadge" class="page-badge hidden">已登录页面</span>
+          </div>
+          <div class="page-actions">
+            <button id="recordBtn" class="btn primary" type="button">开始录制</button>
+            <button id="stopRecordBtn" class="btn danger hidden" type="button">停止录制</button>
+            <button id="checkBtn" class="btn ghost" type="button">检查步骤</button>
+          </div>
+          <div id="pageHint" class="hint">在商品页或结算页点「开始录制」，按真实下单顺序点一遍。</div>
+        </section>
+
+        <section class="card steps-card">
+          <div class="section-head">
+            <h2>执行步骤</h2>
+            <span id="stepCount" class="muted">0 步</span>
+          </div>
+          <div id="stepsEmpty" class="empty">
+            <div class="empty-icon">⌁</div>
+            <div class="empty-title">还没有步骤</div>
+            <div class="empty-text">先打开商品/票务页面，点「开始录制」，再按顺序点击「立即购买 → 提交订单」。</div>
+          </div>
+          <div id="stepsList" class="steps"></div>
+          <div class="steps-foot">
+            <button id="clearBtn" class="link danger-link" type="button">清空步骤</button>
+            <button id="helpBtn" class="link" type="button">录制说明</button>
+          </div>
+          <div id="checkResult" class="check-result hidden"></div>
+        </section>
+
+        <section class="card time-card">
+          <div class="section-head">
+            <h2>执行时间</h2>
+            <span id="timeSource" class="muted">本机时间</span>
+          </div>
+          <label class="field-label" for="targetInput">目标时间</label>
+          <input id="targetInput" class="time-input" type="datetime-local" step="0.001" />
+          <div class="chips" id="quickChips">
+            <button class="chip" data-seconds="10" type="button">+10 秒</button>
+            <button class="chip" data-seconds="30" type="button">+30 秒</button>
+            <button class="chip" data-seconds="60" type="button">+1 分钟</button>
+            <button class="chip" data-seconds="300" type="button">+5 分钟</button>
+            <button class="chip" data-seconds="600" type="button">+10 分钟</button>
+          </div>
+          <div class="time-meta">
+            <span id="timeOffset" class="muted">未校准，使用本机时钟</span>
+            <button id="syncBtn" class="link" type="button">校准网络时间</button>
+          </div>
+          <details class="advanced">
+            <summary>高级设置</summary>
+            <div class="advanced-body">
+              <label class="setting-row">
+                <span>单步等待上限</span>
+                <span class="setting-control">
+                  <input id="stepTimeout" class="number-input" type="number" min="1" max="120" step="1" />
+                  <span class="unit">秒</span>
+                </span>
+              </label>
+              <label class="setting-row checkbox-row">
+                <input id="returnToStart" type="checkbox" />
+                <span>执行前回到录制页面</span>
+              </label>
+              <label class="setting-row checkbox-row">
+                <input id="refreshBeforeRun" type="checkbox" />
+                <span>执行前刷新页面（可能丢失排队）</span>
+              </label>
+              <label class="setting-row checkbox-row">
+                <input id="focusWindow" type="checkbox" />
+                <span>执行时把浏览器窗口切到前台</span>
+              </label>
+              <label class="setting-row checkbox-row">
+                <input id="notify" type="checkbox" />
+                <span>系统通知提醒</span>
+              </label>
+            </div>
+          </details>
+        </section>
+
+        <section id="runCard" class="card run-card hidden">
+          <div class="run-head">
+            <div>
+              <div id="runTitle" class="run-title">任务</div>
+              <div id="runSub" class="run-sub"></div>
+            </div>
+            <div id="runBadge" class="run-badge">待命</div>
+          </div>
+          <div class="progress"><div id="runProgress" class="progress-inner"></div></div>
+          <div id="runCountdown" class="countdown">--:--:--.---</div>
+          <div id="runMessage" class="run-message"></div>
+          <div id="runActions" class="run-actions"></div>
+          <div id="runLogs" class="run-logs"></div>
+        </section>
+
+        <section class="card log-card">
+          <div class="section-head">
+            <h2>运行日志</h2>
+            <span class="muted">最近 8 条</span>
+          </div>
+          <div id="logList" class="logs"><div class="log-empty">暂无日志</div></div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div id="footerHint">只执行你录制的步骤，不碰支付密码。</div>
+        <div class="version">v0.1.0 · 仅限个人自用</div>
+      </footer>
+
+      <div class="arm-bar">
+        <button id="armBtn" class="btn arm" type="button" disabled>布防 · 定时执行</button>
+        <button id="cancelRunBtn" class="btn ghost hidden" type="button">取消任务</button>
+      </div>
+    </div>
+
+    <div id="disclaimer" class="modal hidden">
+      <div class="modal-card">
+        <div class="modal-icon">!</div>
+        <h2>使用前请确认</h2>
+        <div class="modal-copy">
+          <p>这是一个<strong>个人自用</strong>的网页点击辅助工具，不是代拍、抢票或转售服务。</p>
+          <ul>
+            <li>只操作你自己已登录的账号，每次只提交一个订单。</li>
+            <li>不绕过验证码、风控、排队或平台限购规则；遇到验证会暂停。</li>
+            <li>付款必须由你本人完成，工具不会点击支付按钮。</li>
+            <li>请先确认目标网站允许此类辅助操作；账号受限、订单纠纷等风险由你自行承担。</li>
+          </ul>
+          <p class="muted-small">继续即表示你理解并同意以上边界。</p>
+        </div>
+        <label class="agree-row">
+          <input id="agreeCheck" type="checkbox" />
+          <span>我已阅读并同意，仅用于个人自用</span>
+        </label>
+        <button id="agreeBtn" class="btn primary wide" type="button" disabled>同意并开始</button>
+        <button id="closeDisclaimerBtn" class="link wide-link" type="button">暂不使用</button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="../shared/utils.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

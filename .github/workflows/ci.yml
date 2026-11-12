@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 校验 manifest 与 JS 语法
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('extension/manifest.json','utf8')); console.log('manifest.json OK')"
+          for f in extension/background.js extension/shared/utils.js extension/content/content.js extension/popup/popup.js; do
+            node --check "$f"
+          done
+
+      - name: 单元测试
+        run: node --test test/unit.test.mjs

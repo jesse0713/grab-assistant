@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>抢单助手 · 使用说明</title>
+    <style>
+      :root {
+        --bg: #f4f3ef;
+        --card: #fff;
+        --text: #17181c;
+        --muted: #7b7e85;
+        --line: #e7e3db;
+        --orange: #ff5a1f;
+        --orange-soft: #fff0e8;
+        --green: #0f7b4f;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 14px/1.7 system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+      }
+      .wrap { max-width: 760px; margin: 0 auto; padding: 44px 22px 70px; }
+      .hero {
+        display: flex; gap: 16px; align-items: center;
+        padding: 26px; border-radius: 20px;
+        background: linear-gradient(135deg, #1c1d22, #2b2c33);
+        color: #fff; box-shadow: 0 18px 50px rgba(20, 20, 24, .18);
+      }
+      .logo {
+        width: 54px; height: 54px; flex: 0 0 auto; border-radius: 15px;
+        display: grid; place-items: center;
+        background: linear-gradient(145deg, #ff7a3d, #ff4d0f);
+        font-size: 28px;
+      }
+      h1 { margin: 0; font-size: 25px; letter-spacing: .01em; }
+      .hero p { margin: 5px 0 0; color: #b9bbc3; font-size: 13px; }
+      h2 {
+        margin: 34px 0 12px; font-size: 18px; letter-spacing: .01em;
+        display: flex; align-items: center; gap: 9px;
+      }
+      h2 .num {
+        width: 25px; height: 25px; border-radius: 8px;
+        display: grid; place-items: center;
+        background: var(--orange-soft); color: #e84a12;
+        font-size: 13px; font-weight: 750;
+      }
+      p { margin: 8px 0; color: #3f4249; }
+      .card {
+        background: var(--card); border: 1px solid var(--line);
+        border-radius: 15px; padding: 18px 20px; margin: 12px 0;
+      }
+      ol, ul { margin: 8px 0 8px 20px; padding: 0; }
+      li { margin: 5px 0; color: #3f4249; }
+      code {
+        font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-size: 12px; background: #f4f1ec; padding: 2px 5px; border-radius: 5px;
+      }
+      .tip {
+        border-left: 3px solid var(--orange); background: #fff8f3;
+        border-radius: 0 10px 10px 0; padding: 11px 14px; margin: 12px 0;
+        font-size: 13px; color: #5b4136;
+      }
+      .ok { border-left-color: var(--green); background: #f3fbf7; color: #215c42; }
+      .danger { border-left-color: #b42318; background: #fff6f5; color: #6f2a25; }
+      table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+      th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid #efebe4; vertical-align: top; }
+      th { color: var(--muted); font-weight: 600; font-size: 12px; }
+      .faq { margin: 10px 0; }
+      .faq summary { cursor: pointer; font-weight: 650; padding: 7px 0; }
+      .faq p { margin: 2px 0 8px; color: #5a5d64; font-size: 13px; }
+      .foot { margin-top: 40px; color: var(--muted); font-size: 12px; text-align: center; }
+      a { color: #2563eb; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="hero">
+        <div class="logo">⚡</div>
+        <div>
+          <h1>抢单助手 · 使用说明</h1>
+          <p>Chrome 扩展 · 定时点击 · 自动提交订单，停在付款页</p>
+        </div>
+      </div>
+
+      <div class="tip danger">
+        <strong>先说明边界：</strong>这是给你本人账号用的网页点击辅助工具。它不会绕过验证码、风控、排队或限购，不提供代拍/抢票/转售能力，也绝不会点击支付按钮。请确认目标网站允许此类辅助操作，账号受限或订单纠纷的风险由你自行承担。
+      </div>
+
+      <h2><span class="num">1</span>安装</h2>
+      <div class="card">
+        <ol>
+          <li>打开 Chrome，地址栏输入 <code>chrome://extensions</code> 回车。</li>
+          <li>右上角打开「开发者模式」。</li>
+          <li>点「加载已解压的扩展程序」，选择本项目的 <code>extension</code> 文件夹。</li>
+          <li>把「抢单助手」固定到工具栏；打开商品页或结算页，点图标即可。</li>
+        </ol>
+        <p>如果扩展刚安装时当前页面没有反应，刷新一次页面即可。</p>
+      </div>
+
+      <h2><span class="num">2</span>录制步骤</h2>
+      <div class="card">
+        <ol>
+          <li>先在 Chrome 里正常登录目标网站，走到你要开始抢的页面（例如商品详情页）。</li>
+          <li>点扩展图标 →「开始录制」。页面底部会出现黑色悬浮条。</li>
+          <li>按你真实下单的顺序点击：「立即购买」→「提交订单」。每点一步，悬浮条上的数字会加一。</li>
+          <li>点击「提交订单」时，扩展会记录这一步，但会<strong>拦截真实提交</strong>，不会在录制阶段产生订单。</li>
+          <li>点悬浮条的「完成」。回到扩展，你会看到步骤列表。</li>
+        </ol>
+        <div class="tip">
+          录制时页面跳转是正常的：跳转后悬浮条会重新出现，继续点下一步即可。支付按钮（去支付/立即支付/收银台）不会被记录，也不会被执行。
+        </div>
+        <div class="tip ok">
+          页面有多个步骤时，建议先点「检查步骤」。它只检查当前页面能匹配到的步骤，不会真的点击；跳转后的步骤需要到对应页面再检查。
+        </div>
+      </div>
+
+      <h2><span class="num">3</span>设置时间并布防</h2>
+      <div class="card">
+        <ol>
+          <li>在「执行时间」里选择目标时间，精确到毫秒；也可以用「+10 秒」等快捷按钮做演练。</li>
+          <li>第一次使用建议点「校准网络时间」。扩展会对比网络时间并显示偏差；校准失败时会退回本机时钟。</li>
+          <li>点「布防 · 定时执行」。扩展会在目标时间前约 20 秒切回录制页面、准备计时器。</li>
+          <li>到点后自动执行第一步，后续步骤按页面跳转依次执行；最后一步是「提交订单」。</li>
+          <li>看到「已提交」后，立即回到页面检查订单并<strong>手动付款</strong>。</li>
+        </ol>
+        <div class="tip">
+          执行期间请保持电脑唤醒、目标页面打开，尽量不要切换标签页或手动点击，避免和扩展争抢页面状态。
+        </div>
+      </div>
+
+      <h2><span class="num">4</span>它不会做什么</h2>
+      <div class="card">
+        <table>
+          <tr><th>能力</th><th>说明</th></tr>
+          <tr><td>绕过验证码/滑块</td><td>不会。检测到验证会暂停并通知你手动完成。</td></tr>
+          <tr><td>自动付款</td><td>不会。到「提交订单」为止，付款由你操作。</td></tr>
+          <tr><td>多账号/多订单</td><td>不会。一次布防只执行一遍，不循环、不批量。</td></tr>
+          <tr><td>破解排队/风控</td><td>不会。排队或风控页面只会等待或失败，不会伪造请求。</td></tr>
+          <tr><td>云端运行</td><td>不会。所有步骤只保存在你本机 Chrome 的扩展存储里。</td></tr>
+        </table>
+      </div>
+
+      <h2><span class="num">5</span>常见问题</h2>
+      <div class="card">
+        <details class="faq">
+          <summary>提示「未找到某一步」怎么办？</summary>
+          <p>通常是页面改版、按钮文字变了，或者这一步其实在下一页。重新录制这一步即可；也可以先在对应页面点「检查步骤」确认能匹配到。</p>
+        </details>
+        <details class="faq">
+          <summary>为什么到点没有执行？</summary>
+          <p>检查目标页面是否被关闭、刷新或跳到了别的网址；检查是否锁屏；检查扩展是否被浏览器禁用。执行前约 20 秒扩展会尝试切回录制页面，若页面被关闭会重新打开。</p>
+        </details>
+        <details class="faq">
+          <summary>提示「需要人工处理」怎么办？</summary>
+          <p>页面出现了验证码、滑块或安全验证。请在弹出的页面里手动完成，然后回到扩展点「继续执行」。扩展不会替你破解验证。</p>
+        </details>
+        <details class="faq">
+          <summary>会不会重复下单？</summary>
+          <p>一次布防只执行一遍，最后一步执行完就停止，不会循环。但如果你手动刷新页面或再次点布防，可能产生新订单，请自己确认页面状态。</p>
+        </details>
+        <details class="faq">
+          <summary>为什么不做成微信小程序？</summary>
+          <p>微信小程序运行在微信沙箱里，无法读取或点击你 Chrome 里已登录的购物网页。要复用你的登录状态，浏览器扩展是唯一稳妥的形态。</p>
+        </details>
+        <details class="faq">
+          <summary>支持所有购物/票务网站吗？</summary>
+          <p>采用「录制点击」的通用方式，大多数普通网页可用。但每个网站的结算流程、验证码和风控不同；强验证或强排队的平台，只能做到「帮你点到提交订单」，不能保证抢到。</p>
+        </details>
+      </div>
+
+      <h2><span class="num">6</span>安全建议</h2>
+      <div class="card">
+        <ul>
+          <li>不要录密码、支付密码、短信验证码；扩展默认不记录输入内容。</li>
+          <li>不要把扩展文件夹发给别人；步骤里可能包含你的页面地址和按钮信息。</li>
+          <li>只在自己常用的电脑和本人账号上使用。</li>
+          <li>抢票/抢购前先用「+10 秒」做一次完整演练，确认每一步都能被找到。</li>
+        </ul>
+      </div>
+
+      <div class="foot">抢单助手 v0.1.0 · 本工具只做页面点击辅助，不构成任何抢购成功承诺。</div>
+    </div>
+  </body>
+</html>

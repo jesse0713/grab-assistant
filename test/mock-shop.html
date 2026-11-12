@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>测试商品 · 限量闪电版</title>
+    <style>
+      body { margin: 0; font: 15px/1.6 system-ui, "Microsoft YaHei", sans-serif; background: #f7f7f8; color: #1b1c20; }
+      .wrap { max-width: 720px; margin: 40px auto; padding: 0 20px; }
+      .card { background: #fff; border: 1px solid #e7e5e0; border-radius: 16px; padding: 26px; }
+      h1 { margin: 0 0 6px; font-size: 26px; }
+      .sub { color: #777b82; margin-bottom: 18px; }
+      .price { font-size: 34px; color: #ff5a1f; font-weight: 800; margin: 12px 0 20px; }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; }
+      button { border: 0; border-radius: 10px; padding: 11px 18px; font-size: 15px; font-weight: 650; cursor: pointer; }
+      #specBtn { background: #f0eeea; color: #33353a; }
+      #buyBtn { background: #ff5a1f; color: #fff; }
+      .note { margin-top: 18px; padding: 12px 14px; background: #fff8f3; border-radius: 10px; color: #6b4a3a; font-size: 13px; }
+      .pill { display: inline-block; padding: 3px 9px; border-radius: 999px; background: #e9f7f0; color: #0f7b4f; font-size: 12px; margin-bottom: 12px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <div class="pill">本地测试页 · 不会产生真实订单</div>
+        <h1>测试商品 · 限量闪电版</h1>
+        <div class="sub">用于验证「录制 → 定时 → 提交订单」的完整流程。</div>
+        <div class="price">¥ 199.00</div>
+        <div class="row">
+          <button id="specBtn" data-testid="spec-button" type="button">选择规格：标准版</button>
+          <button id="buyBtn" data-testid="buy-now" type="button">立即购买</button>
+        </div>
+        <div class="note">点击「立即购买」会跳到本地结算页；点击「提交订单」才会创建测试订单。</div>
+      </div>
+    </div>
+    <script>
+      const specBtn = document.getElementById('specBtn');
+      let spec = '标准版';
+      specBtn.addEventListener('click', () => {
+        spec = spec === '标准版' ? '典藏版' : '标准版';
+        specBtn.textContent = `选择规格：${spec}`;
+        localStorage.setItem('mockSpec', spec);
+      });
+      document.getElementById('buyBtn').addEventListener('click', () => {
+        location.href = '/test/mock-checkout.html';
+      });
+    </script>
+  </body>
+</html>
